@@ -4,13 +4,16 @@ import './hooks' // This must be imported before any component
 
 import App from './App.vue'
 import router from './router'
-import * as ElementUI from 'element-ui'
+import * as Element from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+import 'assets/css/kaomoji.css'
+import 'assets/js/evanyou'
 import 'console.img'
 
 Vue.config.productionTip = false
 
 // 注册 Vue 插件
-Vue.use(ElementUI)
+Vue.use(Element)
 
 // tslint:disable-next-line:no-unused-expression
 new Vue({
@@ -28,6 +31,7 @@ new Vue({
         console.log('\n%cMoe %cis justice!!!', moe, 'font-weight: bold')
         console.log('%cqwq欢迎加入 %c@MoeFE Studio', 'font-weight: bold', moe)
         console.log('%cGitHub: %chttps://github.com/MoeFE', 'font-weight: bold', 'color: #42b983; font-weight: bold')
+        console.log('')
       }, time.timespan())
     }
     img.src = 'https://avatars3.githubusercontent.com/u/29977599?v=3&s=100'
