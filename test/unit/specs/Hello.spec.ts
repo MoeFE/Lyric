@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import { expect } from 'chai'
 
-import Hello from 'components/Hello.vue'
+import Hello from 'components/Hello'
 
 describe('Hello component', () => {
   it('should render correct contents', () => {
