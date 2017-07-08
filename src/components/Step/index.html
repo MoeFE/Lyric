@@ -1,0 +1,10 @@
+<!-- steps -->
+<el-row>
+  <el-col :lg="{ span: 20, push: 2 }">
+    <el-steps :active="step" process-status="process" finish-status="success">
+      <el-step title="载入音乐文件" description="可以选择上传本地音乐文件或选择网络文件"></el-step>
+      <el-step title="编辑歌词" description="填写好以下信息跟着音乐编辑歌词"></el-step>
+      <el-step title="预览歌词并下载" description="编辑完毕后点击预览歌词查看效果，确认效果OK后点击下载歌词"></el-step>
+    </el-steps>
+  </el-col>
+</el-row>

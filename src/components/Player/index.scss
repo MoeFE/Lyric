@@ -1,0 +1,38 @@
+.aplayer {
+  font-family: inherit;
+  line-height: 1.2;
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .12);
+  margin: 0 !important;
+  margin-bottom: 26px !important;
+  .aplayer-pic {
+    background: url('//q4.qlogo.cn/g?b=qq&nk=485463145&s=100');
+    background-size: cover;
+  }
+  .aplayer-lrc {
+    background: transparent;
+    &::before,
+    &::after {
+      opacity: 0;
+    }
+  }
+  .aplayer-lrc-contents {
+    margin-left: 5px;
+    p {
+      text-align: left;
+    }
+  }
+  .aplayer-list ol li {
+    height: 37px !important;
+    line-height: 37px !important;
+    .aplayer-list-index {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .aplayer {
+    margin-top: 26px !important;
+  }
+}

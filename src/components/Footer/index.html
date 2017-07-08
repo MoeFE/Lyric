@@ -1,0 +1,36 @@
+<!-- footer -->
+<footer class="page-footer">
+  <div class="footer-content">
+    <h2>Lyrics production tool</h2>
+    <a href="//github.com/MoeFE/Lyric/issues" target="_blank">反馈建议</a>
+    <a href="//github.com/MoeFE/Lyric/blob/master/README.md" target="_blank">使用指南</a>
+    <el-tooltip content="QQ音乐提供数据接口支持" placement="top">
+      <a href="//y.qq.com" target="_blank">QQ音乐</a>
+    </el-tooltip>
+    <el-tooltip content="上传歌词赚积分" placement="top">
+      <a href="//music.163.com/#/store/gain/uplyric" target="_blank">网易云音乐</a>
+    </el-tooltip>
+  </div>
+  <div class="icon-groups">
+    <el-popover ref="cqy" placement="top" trigger="hover">
+      <div class="cqy-popver">
+        <div class="qrcode-wrapper">
+          <img class="qrcode" src="//qr.api.cli.im/qr?data=http%253A%252F%252Fqm.qq.com%252Fcgi-bin%252Fqm%252Fqr%253Fk%253D1LFdoNsCLrU_xSG9nGiCVWfKajFf2_DN&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=563f0652c6c37891fcc7a87856d66fef">
+          <img class="qrcode-icon" src="//q4.qlogo.cn/g?b=qq&nk=485463145&s=100">
+        </div>
+        <div class="cqy">
+          <img class="avatar" src="//q4.qlogo.cn/g?b=qq&nk=485463145&s=100">
+          <span>扫一扫二维码，加我QQ。</span>
+        </div>
+      </div>
+    </el-popover>
+    <a href="javascript:;" class="el-icon--qq" v-popover:cqy></a>
+    <!--<a href="javascript:;" class="el-icon--weixin"></a>-->
+    <el-tooltip content="欢迎关注我的微博(* >ω<)" placement="top">
+      <a href="//www.weibo.com/u/5896727167" class="el-icon--weibo" target="_blank"></a>
+    </el-tooltip>
+    <el-tooltip content="喜欢的话收藏一下仓库哟(〃ﾉωﾉ)" placement="top">
+      <a href="//github.com/MoeFE/Lyric" class="el-icon--github" target="_blank"></a>
+    </el-tooltip>
+  </div>
+</footer>

@@ -1,0 +1,51 @@
+.page-footer {
+  height: 120px;
+  background-color: #324057;
+  color: #a4aebd;
+  overflow: hidden;
+  margin-top: 10px;
+  position: relative;
+  .footer-content {
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translate3d(0, -50%, 0);
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0;
+    &::after {
+      content: "(●'◡'●)ﾉ♥";
+      animation: face-shake 5s infinite;
+      display: inline-block;
+      text-indent: 8px;
+    }
+  }
+  a {
+    font-size: 12px;
+    color: #768193;
+    text-decoration: none;
+    margin-right: 8px;
+  }
+  .icon-groups {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    transform: translate3d(0, -50%, 0);
+    -webkit-user-select: none;
+    [class*=" el-icon--"],
+    [class^=el-icon--] {
+      font-size: 34px;
+      display: inline-block;
+      vertical-align: middle;
+      transition: .3s;
+      margin: 0 8px;
+      &:hover {
+        color: #fff;
+        transform: scale(1.2);
+      }
+    }
+  }
+}
