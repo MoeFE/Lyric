@@ -48,4 +48,76 @@
       }
     }
   }
+  /* 处q友 */
+  .cqy-popver {
+    text-align: center;
+    margin: -10px;
+    .qrcode-wrapper {
+      padding: 10px;
+      position: relative;
+      .qrcode {
+        width: 180px;
+      }
+      .qrcode-icon {
+        width: 50px;
+        padding: 5px;
+        border-radius: 8px;
+        background: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+      }
+    }
+    .cqy {
+      border-top: 1px solid #d8d8d8;
+      padding: 10px;
+      .avatar {
+        $size: 40px;
+        width: $size;
+        border-radius: $size;
+      }
+      span {
+        text-indent: 6px;
+      }
+      >* {
+        display: inline-block;
+        vertical-align: middle;
+        color: #717171;
+      }
+    }
+  }
+}
+
+
+/* ipad */
+
+@media (max-width: 768px) {
+  .page-footer {
+    .footer-content {
+      left: 10%;
+    }
+    .icon-groups {
+      right: 10%;
+    }
+  }
+}
+
+
+/* iPhone 6 plus */
+
+@media (max-width: 414px) {
+  .page-footer {
+    h2::after,
+    .icon-groups {
+      display: none;
+    }
+    a {
+      margin: 0;
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        display: none;
+      }
+    }
+  }
 }
