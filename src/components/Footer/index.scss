@@ -71,7 +71,7 @@
   .page-footer {
     h2::after,
     .icon-groups {
-      display: none;
+      display: none !important;
     }
     a {
       margin: 0;
