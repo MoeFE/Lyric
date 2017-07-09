@@ -1,4 +1,4 @@
-# [Overwrite Lyric](github.com/u3u/Lyric)
+# [Overwrite Lyric](https://github.com/u3u/Lyric)
 
 > A Vue.js project
 
