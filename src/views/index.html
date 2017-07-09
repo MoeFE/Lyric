@@ -3,7 +3,9 @@
     <Help />
     <Step />
     <el-row :gutter="20">
-      <VForm />
+      <el-col :lg="{ span: 13, push: 2 }">
+        <VForm />
+      </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
         <APlayer />
         <Upload />
