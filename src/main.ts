@@ -4,7 +4,9 @@ import './hooks' // This must be imported before any component
 
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import * as Element from 'element-ui'
+
 import 'element-ui/lib/theme-default/index.css'
 import 'assets/css/kaomoji.css'
 import 'assets/js/evanyou'
@@ -19,6 +21,7 @@ Vue.use(Element)
 new Vue({
   el: 'app',
   router,
+  store,
   render: (h) => h(App),
   beforeCreate () {
     const time = { start: 0, end: 0, timespan: () => time.end - time.start }
