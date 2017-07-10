@@ -67,6 +67,10 @@ module.exports = {
         options: vueTemplateLoaderConfig
       },
       {
+        test: /\.(css|less|scss|styl|stylus)$/,
+        loader: 'postcss-loader'
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
