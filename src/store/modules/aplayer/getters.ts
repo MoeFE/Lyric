@@ -1,7 +1,5 @@
 import { GetterTree } from 'vuex'
 import { State } from './state'
 
-const options = (state: State) => () => state
-const music = (state: State) => () => state.music
-
-export default { options, music } as GetterTree<State, any>
+export const list = (state: State): Array<APlayer.Music> => state.list
+export const getters = { list } as GetterTree<State, any>

@@ -1,12 +1,8 @@
 import { MutationTree } from 'vuex'
 import { State } from './state'
-import * as types from './mutation-types'
-const { ADD_MUSICS } = types
+import { ADD_MUSICS, SET_MUSIC } from './types'
 
-const mutations: MutationTree<State> = {
-  [ADD_MUSICS]: (state: State, { musics }) => {
-    state.music = musics
-  }
-}
-
-export default { ...mutations }
+export const mutations = {
+  [ADD_MUSICS]: (state: State, musics: Array<APlayer.Music>) => state.list = musics,
+  [SET_MUSIC]: (state: State, music: APlayer.Music) => state.music = music
+} as MutationTree<State>

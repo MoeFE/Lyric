@@ -1,20 +1,18 @@
-import { Module } from 'vuex'
+import { Module, ActionTree, GetterTree, MutationTree } from 'vuex'
+
 import { State } from './state'
-import Mutations from './mutations'
-import Actions from './actions'
-import Getters from './getters'
+import { actions } from './actions'
+import { getters } from './getters'
+import { mutations } from './mutations'
+
+const state: State = {
+  list: []
+}
 
 export class APlayer implements Module<State, any> {
-
-  namespaced: boolean = true
-
-  state: State
-  mutations = Mutations
-  actions = Actions
-  getters = Getters
-
-  constructor () {
-    this.state = new State()
-  }
-
+  public readonly namespaced: boolean = true
+  public readonly state: State = state
+  public readonly actions: ActionTree<State, any> = actions
+  public readonly getters: GetterTree<State, any> = getters
+  public readonly mutations: MutationTree<State> = mutations
 }

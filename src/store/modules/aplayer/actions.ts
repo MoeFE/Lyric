@@ -1,25 +1,37 @@
-import { favorite } from 'api/NeteaseCloudMusicApi'
 import { ActionTree, ActionContext } from 'vuex'
 import { State } from './state'
-import * as types from './mutation-types'
-const { ADD_MUSICS } = types
+import { ADD_MUSICS, SET_MUSIC } from './types'
+import { getFavorites, getMusicURLs, getLyric } from 'api/NeteaseCloudMusicApi'
 
-/** 获取我收藏的歌单歌曲列表 */
-async function favorites (state: ActionContext<State, any>) {
-  const response = await favorite()
-  if (response.data.success) {
-    const musics: Array<IAPMusic> = []
-    const tracks = response.data.playlist.tracks as Array<any>
-    tracks.forEach(item => {
-      musics.push({
-        title: item.name,
-        author: item.ar.map(x => x.name).join('／'),
-        pic: item.al.picUrl,
-        url: ''
-      })
+async function getMusics ({ commit }: ActionContext<State, any>, timestamp?: number) {
+  const { data } = await getFavorites()
+  if (!data.success) return
+
+  const tracks = data.playlist.tracks as Array<any>
+  const response = await getMusicURLs(tracks.map(x => x.id) as Array<number>, timestamp)
+  if (!response.data.success) return
+
+  const urls = response.data['data']
+  const musics: Array<APlayer.Music> = []
+  tracks.forEach(item => {
+    musics.push({
+      id: item.id,
+      title: item.name,
+      author: item.ar.map(x => x.name).join('／'),
+      pic: item.al.picUrl,
+      url: urls.find(url => url.id === item.id).url,
+      lrc: 'loading'
     })
-    state.commit({ type: ADD_MUSICS, musics })
-  }
+  })
+
+  commit(ADD_MUSICS, musics)
 }
 
-export default { favorites } as ActionTree<State, any>
+async function getLyricAsync ({ commit }: ActionContext<State, any>, music: APlayer.Music) {
+  const { data } = await getLyric(music.id)
+  if (!data.success) return
+  music.lrc = data.nolyric || data.uncollected ? null : data.lrc.lyric
+  commit(SET_MUSIC, music)
+}
+
+export const actions = { getMusics, getLyricAsync } as ActionTree<State, any>
