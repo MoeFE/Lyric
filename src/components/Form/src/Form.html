@@ -1,4 +1,4 @@
-<!-- form -->
+<!-- Form Component -->
 <el-form ref="form" :rules="rules" label-position="right" label-width="70px">
   <el-form-item label="歌曲名" prop="songName">
     <el-autocomplete class="auto-complete-sugg" placeholder="请输入歌曲名"></el-autocomplete>
@@ -13,13 +13,13 @@
     <el-input placeholder="请输入编辑人"></el-input>
   </el-form-item>
   <!-- Editor Component -->
-  <Editor />
+  <slot name="Editor" />
   <div class="button-group">
     <el-tooltip class="lyric-download-confirm-tooltip" content="点击下载后会重置UI，请务必保存到本地" placement="left">
       <a ref="download" class="el-button el-button--primary" target="_blank">
-          <i class="el-icon--download1"></i>
-          <span>下载歌词</span>
-        </a>
+        <i class="el-icon--download1"></i>
+        <span>下载歌词</span>
+      </a>
     </el-tooltip>
   </div>
 </el-form>

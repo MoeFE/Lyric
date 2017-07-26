@@ -1,9 +1,3 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import WithRender from './index.html?style=./index.scss'
-
-import { Prop } from 'vue-property-decorator'
-
-@WithRender
-@Component
-export class Step extends Vue {}
+import { Step } from './src/Step'
+export { Step }
+export default Step
