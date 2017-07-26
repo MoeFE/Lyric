@@ -9,7 +9,7 @@
         </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
-        <APlayer :music="[]" />
+        <APlayer ref="aplayer" :music="music" listmaxheight="200px" />
         <Upload />
       </el-col>
     </el-row>
