@@ -4,13 +4,15 @@
     <Step />
     <el-row :gutter="20">
       <el-col :lg="{ span: 13, push: 2 }">
-        <VForm />
+        <vForm>
+          <Editor slot="Editor"></Editor>
+        </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
-        <APlayer />
+        <APlayer :music="[]" />
         <Upload />
       </el-col>
     </el-row>
   </main>
-  <VFooter />
+  <vFooter />
 </section>
