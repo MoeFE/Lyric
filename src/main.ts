@@ -10,7 +10,6 @@ import * as Element from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import 'assets/css/kaomoji.css'
 import 'assets/js/evanyou'
-import 'console.img'
 
 Vue.config.productionTip = false
 
