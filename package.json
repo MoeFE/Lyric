@@ -1,18 +1,13 @@
 {
   "name": "lyric",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "u3u <485463145@qq.com>",
+  "description": "Online LRC lyrics production tool",
+  "author": "u3u <quq@quq.cat>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
-    "eslint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "tslint": "tslint -s node_modules/custom-tslint-formatters/formatters -t grouped 'src/**/*.ts' 'test/unit/**/*.ts' 'test/e2e/*.ts'"
+    "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.16.2",
