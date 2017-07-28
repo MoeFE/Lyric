@@ -1,2 +1,3 @@
 import { APlayer } from './aplayer'
-export { APlayer }
+import { Form } from './form'
+export { APlayer, Form }
