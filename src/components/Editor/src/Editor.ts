@@ -12,4 +12,5 @@ export class Editor extends Vue {
   public readonly value: string
 
 }
+
 export default Editor

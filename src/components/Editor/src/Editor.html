@@ -22,9 +22,18 @@
       <el-button size="small" icon="-preview"></el-button>
     </el-tooltip>
   </div>
-  <el-input class="lrc-textarea" ref="textarea" type="textarea" :autosize="{ minRows: 15, maxRows: 15 }" placeholder="请输入歌词文本" :value="value" @input="$emit('input', $event)"></el-input>
+   <el-input
+    class="lrc-textarea"
+    ref="textarea"
+    type="textarea"
+    placeholder="请输入歌词文本"
+    :value="value"
+    :autosize="{ minRows: 15, maxRows: 15 }"
+    @input="$emit('input', $event)"
+  >
+  </el-input>
   <div class="lrc-editor_status-bar">
-    <span v-if="songName">正在编辑歌曲 《{{ songName }}》 的歌词 &nbsp;&nbsp; 编辑人: {{ byName || '活雷锋' }}</span>
+    <span v-if="songName">正在编辑歌曲 《{{ songName }}》 的歌词 &nbsp;&nbsp; 编辑人: {{ byName }}</span>
     <span v-else>LRC Editor Version 1.0</span>
     <span class="lrc-editor_timebar" v-show="savetime"><i class="el-icon-time"></i> {{ savetime }}</span>
   </div>
