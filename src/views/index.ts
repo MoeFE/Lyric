@@ -13,26 +13,17 @@ Vue.use(APlayer)
 @Component({ components: { Editor, vFooter, vForm, Help, Step, Upload } })
 export default class IndexPage extends Vue {
 
-  private lrc: string = ''
-
   @Getter('aplayer/list')
   private readonly music: Array<APlayer.Music>
-  @Getter('form/meta')
-  private readonly meta: string
   @Action('aplayer/getMusics')
   private getMusics: () => void
   @Action('aplayer/getLyricAsync')
   private getLyricAsync: (id: number) => void
 
-  private get lyric (): string {
-    return this.meta
-  }
+  private lyric: string = ''
+  private readonly model: Model = { songName: '', singerName: '', albumName: '', authorName: '' }
 
-  private set lyric (value) {
-    this.lrc = value
-  }
-
-  private async created (): Promise<void> {
+  private created (): void {
     this.getMusics()
   }
 
