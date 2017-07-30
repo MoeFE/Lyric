@@ -4,8 +4,8 @@
     <Step :active="1" />
     <el-row :gutter="20">
       <el-col :lg="{ span: 13, push: 2 }">
-        <vForm>
-          <Editor slot="Editor"></Editor>
+        <vForm :model="model">
+          <Editor slot="Editor" v-model="lyric"></Editor>
         </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
