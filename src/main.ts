@@ -12,6 +12,15 @@ import 'assets/css/kaomoji.css'
 import 'assets/js/evanyou'
 
 Vue.config.productionTip = false
+Vue.config.keyCodes = {
+  f9: 120,
+  f10: 121,
+  f11: 122,
+  f12: 123,
+  v: 86,
+  y: 89,
+  z: 90
+}
 
 // 注册 Vue 插件
 Vue.use(Element)
