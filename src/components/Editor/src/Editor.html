@@ -1,25 +1,25 @@
 <div class="lrc-editor">
   <div class="lrc-editor_toolbar">
     <el-tooltip content="添加时间标签(F9)" placement="top">
-      <el-button size="small" icon="plus"></el-button>
+      <el-button size="small" icon="plus" @click="add"></el-button>
     </el-tooltip>
     <el-tooltip content="替换当前时间标签(F10)" placement="top">
-      <el-button size="small" icon="-replace3"></el-button>
+      <el-button size="small" icon="-replace3" @click="rp"></el-button>
     </el-tooltip>
     <el-tooltip content="移除当前时间标签(F11)" placement="top">
-      <el-button size="small" icon="minus"></el-button>
+      <el-button size="small" icon="minus" @click="rm"></el-button>
     </el-tooltip>
     <el-tooltip content="删除所有时间标签(F12)" placement="top">
-      <el-button size="small" icon="delete2"></el-button>
+      <el-button size="small" icon="delete2" @click="del"></el-button>
     </el-tooltip>
     <el-tooltip content="撤销(CTRL+Z)" placement="top">
-      <el-button size="small" icon="-undo-copy"></el-button>
+      <el-button size="small" icon="-undo-copy" @click="undo"></el-button>
     </el-tooltip>
     <el-tooltip content="恢复(CTRL+Y)" placement="top">
-      <el-button size="small" icon="-undo-copy el-icon-reversal"></el-button>
+      <el-button size="small" icon="-undo-copy el-icon-reversal" @click="redo"></el-button>
     </el-tooltip>
     <el-tooltip content="预览歌词(CTRL+ALT+V)" placement="top">
-      <el-button size="small" icon="-preview"></el-button>
+      <el-button size="small" icon="-preview" @click="preview"></el-button>
     </el-tooltip>
   </div>
    <el-input
@@ -29,7 +29,14 @@
     placeholder="请输入歌词文本"
     :value="value"
     :autosize="{ minRows: 15, maxRows: 15 }"
-    @input="$emit('input', $event)"
+    @input="updateValue($event)"
+    @keydown.native.f9="add"
+    @keydown.native.f10="rp"
+    @keydown.native.f11="rm"
+    @keydown.native.f12="del"
+    @keydown.native.ctrl.z="undo"
+    @keydown.native.ctrl.y="redo"
+    @keydown.native.ctrl.v="preview"
   >
   </el-input>
   <div class="lrc-editor_status-bar">
