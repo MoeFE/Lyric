@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import WithRender from './index.html?style=./index.scss'
 
+import { Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
+
+import { lyric2model } from 'utils'
 
 import { Editor, Footer as vFooter, Form as vForm, Help, Step, Upload } from 'components'
 import APlayer from 'vue-aplayer-plugin'
@@ -21,10 +24,15 @@ export default class IndexPage extends Vue {
   private getLyricAsync: (id: number) => void
 
   private lyric: string = ''
-  private readonly model: Model = { songName: '', singerName: '', albumName: '', authorName: '' }
+  private model: Model = { songName: '', singerName: '', albumName: '', authorName: '' }
 
   private created (): void {
     this.getMusics()
+  }
+
+  @Watch('lyric')
+  private lyricChange (): void {
+    this.model = lyric2model(this.lyric)
   }
 
 }
