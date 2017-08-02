@@ -1,5 +1,5 @@
-import { request } from 'utils/request'
-import { Config } from 'utils/config'
+import { request } from 'utils'
+import { Config } from 'utils'
 const { playlist, playurl, lyric } = Config.apis
 
 export async function getFavorites () {

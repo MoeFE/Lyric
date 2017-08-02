@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { Config } from 'utils/config'
+import { Config } from './config'
 const { baseURL } = Config
 
 export async function request<T> (url: string, params?: T): Promise<AxiosResponse> {

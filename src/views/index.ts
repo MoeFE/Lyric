@@ -5,7 +5,7 @@ import WithRender from './index.html?style=./index.scss'
 import { Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 
-import { lyric2model } from 'utils'
+import { LRCUtil } from 'utils'
 
 import { Editor, Footer as vFooter, Form as vForm, Help, Step, Upload } from 'components'
 import APlayer from 'vue-aplayer-plugin'
@@ -23,16 +23,25 @@ export default class IndexPage extends Vue {
   @Action('aplayer/getLyricAsync')
   private getLyricAsync: (id: number) => void
 
+  private aplayer = null
   private lyric: string = ''
   private model: Model = { songName: '', singerName: '', albumName: '', authorName: '' }
+
+  private get currentTime (): number {
+    return this.aplayer ? this.aplayer.media.currentTime : 0
+  }
 
   private created (): void {
     this.getMusics()
   }
 
+  private mounted (): void {
+    this.aplayer = this.$refs.aplayer
+  }
+
   @Watch('lyric')
   private lyricChange (): void {
-    this.model = lyric2model(this.lyric)
+    this.model = LRCUtil.lyric2model(this.lyric)
   }
 
 }
