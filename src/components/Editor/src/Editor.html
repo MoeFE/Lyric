@@ -40,8 +40,8 @@
   >
   </el-input>
   <div class="lrc-editor_status-bar">
-    <span v-if="songName">正在编辑歌曲 《{{ songName }}》 的歌词 &nbsp;&nbsp; 编辑人: {{ byName }}</span>
-    <span v-else>LRC Editor Version 1.0</span>
+    <span v-if="model.songName">正在编辑歌曲 《{{ model.songName }}》 的歌词，编辑人: {{ model.authorName || '匿名' }}</span>
+    <span v-else>LRC Editor Version 1.1.0</span>
     <span class="lrc-editor_timebar" v-show="savetime"><i class="el-icon-time"></i> {{ savetime }}</span>
   </div>
 </div>

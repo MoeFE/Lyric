@@ -5,7 +5,7 @@
     <el-row :gutter="20">
       <el-col :lg="{ span: 13, push: 2 }">
         <vForm :model="model">
-          <Editor slot="Editor" :model="model" v-model="lyric"></Editor>
+          <Editor slot="Editor" :model="model" v-model="lyric" :currentTime="currentTime"></Editor>
         </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
