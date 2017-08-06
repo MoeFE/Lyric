@@ -1,6 +1,10 @@
 import { request } from 'utils'
 import { Config } from 'utils'
-const { playlist, playurl, lyric } = Config.apis
+const { search, playlist, playurl, lyric } = Config.apis
+
+export async function searchKeyword (kw: string) {
+  return await request(search + kw)
+}
 
 export async function getFavorites () {
   return await request(playlist)
