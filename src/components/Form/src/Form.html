@@ -1,16 +1,16 @@
 <!-- Form Component -->
 <el-form ref="form" :model="model" :rules="rules" label-position="right" label-width="70px">
   <el-form-item label="歌曲名" prop="songName">
-    <el-input class="auto-complete-sugg" placeholder="请输入歌曲名" v-model="model.songName"></el-input>
+    <slot name="songName" />
   </el-form-item>
   <el-form-item label="歌手名" prop="singerName">
-    <el-input class="auto-complete-sugg" placeholder="请输入歌手名" v-model="model.singerName"></el-input>
+    <slot name="singerName" />
   </el-form-item>
   <el-form-item label="专辑名" prop="albumName">
-    <el-input placeholder="请输入专辑名" v-model="model.albumName"></el-input>
+    <slot name="albumName" />
   </el-form-item>
   <el-form-item label="编辑人" prop="authorName">
-    <el-input placeholder="请输入编辑人" v-model="model.authorName"></el-input>
+    <slot name="authorName" />
   </el-form-item>
   <!-- Editor Component -->
   <slot name="Editor" />
