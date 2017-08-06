@@ -6,6 +6,9 @@
   main {
     padding: 15px;
     flex: 1;
+    .el-autocomplete {
+      display: block;
+    }
   }
   >>> .aplayer {
     margin-bottom: 22px;
