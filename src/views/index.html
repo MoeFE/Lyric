@@ -1,7 +1,7 @@
 <section class="container">
   <main>
     <Help />
-    <Step :active="1" />
+    <Step :active="active" />
     <el-row :gutter="20">
       <el-col :lg="{ span: 13, push: 2 }">
         <vForm :model="model">
@@ -13,7 +13,7 @@
         </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
-        <APlayer ref="aplayer" :music="music" listmaxheight="200px" />
+        <APlayer ref="aplayer" :music="music" :showlrc="showlrc" listmaxheight="200px" @play="playHandler" @error="errorHandler" />
         <Upload />
       </el-col>
     </el-row>

@@ -5,7 +5,7 @@ import WithRender from './index.html?style=./index.scss'
 import { Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 
-import { LRCUtil } from 'utils'
+import { LRCUtil, Thread } from 'utils'
 import * as NeteaseCloudMusicApi from 'api/NeteaseCloudMusicApi'
 
 import { Editor, Footer as vFooter, Form as vForm, Help, Step, Upload } from 'components'
@@ -34,11 +34,14 @@ export default class IndexPage extends Vue {
   @Getter('aplayer/list')
   private readonly music: Array<APlayer.Music>
   @Action('aplayer/getMusics')
-  private getMusics: () => void
+  private getMusics: (timestamp?: number) => void
   @Action('aplayer/getLyricAsync')
   private getLyricAsync: (id: number) => void
 
   private aplayer = null
+  private showlrc: boolean = true
+  private active: number = 0
+  private mp3Url: string = null
   private lyric: string = ''
   private model: Model = { songName: '', singerName: '', albumName: '', authorName: '' }
 
@@ -139,9 +142,17 @@ export default class IndexPage extends Vue {
     this.aplayer = this.$refs.aplayer
   }
 
+  @Watch('mp3Url')
+  private mp3UrlChange (): void {
+    this.active = this.mp3Url ? 1 : 0
+    this.lyricChange()
+  }
+
   @Watch('lyric')
   private lyricChange (): void {
     this.model = LRCUtil.lyric2model(this.lyric)
+    if (!this.mp3Url) this.active = 0
+    else this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
   }
 
   private async searchSuggest (qs: string, cb: (data: Array<any>) => void): Promise<void> {
@@ -160,10 +171,48 @@ export default class IndexPage extends Vue {
     cb(data.success ? data.result.songs : [])
   }
 
-  private selectHandler (item): void {
+  private async selectHandler (item): Promise<void> {
     if (item) {
       this.model.songName = item.name
       this.model.singerName = item.artists.map(x => x.name).join(' / ')
+      const { data } = await NeteaseCloudMusicApi.getMusicURL(item.id)
+      if (data.success) {
+        const music = {
+          id: item.id,
+          title: this.model.songName,
+          author: this.model.singerName,
+          pic: item.album.picUrl,
+          url: data['data'][0].url
+        }
+        this.mp3Url = music.url
+        this.showlrc = false
+        if (this.music.findIndex(x => x.id === item.id) < 0) this.music.push(music)
+        this.aplayer.play(this.music.length - 1)
+        this.aplayer.play()
+      }
+    }
+  }
+
+  private async playHandler (): Promise<void> {
+    this.showlrc = true
+    if (this.aplayer.currentMusic.lrc && this.aplayer.currentMusic.lrc !== 'loading') return
+    await Thread.sleep(500)
+    const { data } = await NeteaseCloudMusicApi.getLyric(this.aplayer.currentMusic.id)
+    if (data.success) {
+      this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc: data.nolyric || data.uncollected ? null : data.lrc.lyric })
+    }
+  }
+
+  private async errorHandler (): Promise<void> {
+    debugger
+    if (this.aplayer.playIndex < 0) return
+    this.aplayer.pause()
+    debugger
+    if (this.music.length > 0) {
+      await this.getMusics(new Date().getTime())
+      this.aplayer.play(this.aplayer.playIndex)
+      this.aplayer.play()
+      return
     }
   }
 
