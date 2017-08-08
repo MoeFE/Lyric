@@ -17,8 +17,7 @@ export class Editor extends Vue {
   public readonly currentTime: number
 
   private get meta (): string {
-    const { songName, singerName, albumName, authorName } = this.model
-    return `[ti:${songName}]\n[ar:${singerName}]\n[al:${albumName}]\n[by:${authorName}]\n\n`
+    return LRCUtil.getMeta(this.model)
   }
 
   private get textarea (): HTMLTextAreaElement {
@@ -96,7 +95,6 @@ export class Editor extends Vue {
   }
   private preview (): void {
     this.$emit('preview')
-    this.$nextTick(() => this.textarea.focus())
   }
 
 }
