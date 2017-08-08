@@ -9,11 +9,11 @@
           <el-autocomplete slot="singerName" class="auto-complete-sugg" placeholder="请输入歌手名" v-model="model.singerName" :fetch-suggestions="searchSuggest" @select="selectHandler" custom-item="autocomplete-singer-name" popper-class="auto-complete-sugg"></el-autocomplete>
           <el-input slot="albumName" placeholder="请输入专辑名" v-model="model.albumName"></el-input>
           <el-input slot="authorName" placeholder="请输入编辑人" v-model="model.authorName"></el-input>
-          <Editor slot="Editor" :model="model" v-model="lyric" :currentTime="currentTime"></Editor>
+          <Editor slot="Editor" :model="model" v-model="lyric" :currentTime="currentTime" @preview="previewHandler"></Editor>
         </vForm>
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
-        <APlayer ref="aplayer" :music="music" :showlrc="showlrc" listmaxheight="200px" @play="playHandler" @error="errorHandler" />
+        <APlayer ref="aplayer" :music="music" :showlrc="showlrc" listmaxheight="200px" @loadedmetadata="loadedmetadata" @error="errorHandler" />
         <Upload />
       </el-col>
     </el-row>

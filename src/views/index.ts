@@ -38,6 +38,7 @@ export default class IndexPage extends Vue {
   @Action('aplayer/getLyricAsync')
   private getLyricAsync: (id: number) => void
 
+  private $message: any
   private aplayer = null
   private showlrc: boolean = true
   private active: number = 0
@@ -49,8 +50,11 @@ export default class IndexPage extends Vue {
     return this.aplayer ? this.aplayer.media.currentTime : 0
   }
 
+  private beforeCreate (): void {
+    window['NProgress'].start()
+  }
+
   private created (): void {
-    this.getMusics()
     this.lyric = `
     [ti:无归（Cover 叶里）]
     [ar:玄觞]
@@ -138,21 +142,28 @@ export default class IndexPage extends Vue {
     `.split('\n').map(x => x.trim()).join('\n')
   }
 
-  private mounted (): void {
+  private async mounted (): Promise<void> {
     this.aplayer = this.$refs.aplayer
+    await this.getMusics()
+    this.aplayer.play(0)
   }
 
   @Watch('mp3Url')
   private mp3UrlChange (): void {
-    this.active = this.mp3Url ? 1 : 0
+    this.active = this.mp3Url === this.aplayer.currentMusic.url ? 1 : 0
     this.lyricChange()
   }
 
   @Watch('lyric')
   private lyricChange (): void {
     this.model = LRCUtil.lyric2model(this.lyric)
-    if (!this.mp3Url) this.active = 0
-    else this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
+    if (this.mp3Url === this.aplayer.currentMusic.url) this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
+    else this.active = 0
+  }
+
+  @Watch('active')
+  private activeChange (): void {
+    if (this.active === 1) this.$message('音频文件已载入')
   }
 
   private async searchSuggest (qs: string, cb: (data: Array<any>) => void): Promise<void> {
@@ -185,7 +196,6 @@ export default class IndexPage extends Vue {
           url: data['data'][0].url
         }
         this.mp3Url = music.url
-        this.showlrc = false
         if (this.music.findIndex(x => x.id === item.id) < 0) this.music.push(music)
         this.aplayer.play(this.music.length - 1)
         this.aplayer.play()
@@ -193,26 +203,47 @@ export default class IndexPage extends Vue {
     }
   }
 
-  private async playHandler (): Promise<void> {
-    this.showlrc = true
+  private async loadedmetadata (): Promise<void> {
+    window['NProgress'].done()
+    this.mp3UrlChange()
+    this.showlrc = this.active === 0
     if (this.aplayer.currentMusic.lrc && this.aplayer.currentMusic.lrc !== 'loading') return
     await Thread.sleep(500)
     const { data } = await NeteaseCloudMusicApi.getLyric(this.aplayer.currentMusic.id)
-    if (data.success) {
-      this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc: data.nolyric || data.uncollected ? null : data.lrc.lyric })
+    const lrc = data.nolyric || data.uncollected ? null : data.lrc.lyric
+    if (data.success && this.showlrc) {
+      this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc })
+    } else {
+      this.lyric = LRCUtil.getMeta(this.model) + lrc // LRCUtil.getPureLyric(lrc)
     }
   }
 
   private async errorHandler (): Promise<void> {
-    debugger
+    this.$message({ type: 'error', message: '加载音频文件失败' })
     if (this.aplayer.playIndex < 0) return
     this.aplayer.pause()
-    debugger
     if (this.music.length > 0) {
       await this.getMusics(new Date().getTime())
+      await Thread.sleep()
       this.aplayer.play(this.aplayer.playIndex)
       this.aplayer.play()
       return
+    }
+  }
+
+  private previewHandler (): void {
+    if (this.active === 2) {
+      this.active = 3
+      this.showlrc = true
+      this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc: this.lyric })
+    } else {
+      const isDesktop = window['device'].desktop()
+      this.$message({
+        type: 'warning',
+        message: isDesktop ? '音乐文件未载入，可通过歌曲名称搜索网易云音乐曲库，使用网络地址，或本地上传的方式载入。' : '请先载入音乐文件',
+        duration: isDesktop ? 5e3 : 3e3,
+        showClose: isDesktop
+      })
     }
   }
 
