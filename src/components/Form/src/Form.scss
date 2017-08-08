@@ -31,6 +31,9 @@
 
 .button-group {
   text-align: right;
+  @media (max-width: 1200px) {
+    margin-bottom: 20px;
+  }
 }
 
 
