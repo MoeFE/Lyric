@@ -36,6 +36,17 @@ export abstract class LRCUtil {
     })
     return model as Model
   }
+  public static getPureLyric (lrc: string): string {
+    lrc = LRCUtil.deleteTimeTag(lrc)
+    Object.keys(LRCUtil.regex).forEach(key => {
+      lrc = lrc.replace(LRCUtil.regex[key], '')
+    })
+    return lrc
+  }
+  public static getMeta (model: Model): string {
+    const { songName, singerName, albumName, authorName } = model
+    return `[ti:${songName}]\n[ar:${singerName}]\n[al:${albumName}]\n[by:${authorName}]\n\n`
+  }
 
   private static get displayCurrentTime (): string {
     const minutes = Number.parseInt((LRCUtil.currentTime / 60).toString()).toString().padLeft(2, '0')
