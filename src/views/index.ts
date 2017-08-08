@@ -164,6 +164,12 @@ export default class IndexPage extends Vue {
   @Watch('active')
   private activeChange (): void {
     if (this.active === 1) this.$message('音频文件已载入')
+    else if (this.active === 3) {
+      this.showlrc = true
+      this.aplayer.togglePlayMode('single')
+    } else {
+      this.aplayer.togglePlayMode('circulation')
+    }
   }
 
   private async searchSuggest (qs: string, cb: (data: Array<any>) => void): Promise<void> {
@@ -234,7 +240,6 @@ export default class IndexPage extends Vue {
   private previewHandler (): void {
     if (this.active === 2) {
       this.active = 3
-      this.showlrc = true
       this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc: this.lyric })
     } else {
       const isDesktop = window['device'].desktop()
