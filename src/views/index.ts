@@ -6,6 +6,7 @@ import { Watch } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 
 import { LRCUtil, Thread } from 'utils'
+import * as Clipboard from 'clipboard'
 import * as NeteaseCloudMusicApi from 'api/NeteaseCloudMusicApi'
 
 import { Editor, Footer as vFooter, Form as vForm, Help, Step, Upload } from 'components'
@@ -38,6 +39,8 @@ export default class IndexPage extends Vue {
   @Action('aplayer/getLyricAsync')
   private getLyricAsync: (id: number) => void
 
+  private $notify: any
+  private $confirm: any
   private $message: any
   private $loading: any
   private loading: any = null
@@ -158,7 +161,7 @@ export default class IndexPage extends Vue {
 
   @Watch('lyric')
   private lyricChange (): void {
-    this.model = LRCUtil.lyric2model(this.lyric)
+    if (this.lyric.trim()) this.model = LRCUtil.lyric2model(this.lyric)
     if (this.mp3Url === this.aplayer.currentMusic.url) {
       this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
     } else this.active = 0
@@ -225,7 +228,7 @@ export default class IndexPage extends Vue {
     if (data.success && this.showlrc) {
       this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc })
     } else {
-      this.lyric = LRCUtil.getMeta(this.model) + lrc // LRCUtil.getPureLyric(lrc)
+      this.lyric = LRCUtil.getMeta(this.model) + LRCUtil.getPureLyric(lrc)
     }
   }
 
@@ -299,6 +302,70 @@ export default class IndexPage extends Vue {
       mp3Url: url,
       album: {}
     })
+  }
+
+  private async downloadHandler (): Promise<void> {
+    Object.keys(this.model).forEach(key => this.model[key] = '')
+    this.lyric = ''
+    this.mp3Url = ''
+    this.active = 0
+    await this.getMusics()
+    await Thread.sleep()
+    this.aplayer.play(0)
+    this.$nextTick(() => {
+      this.$refs.form['$refs'].form['resetFields']()
+      this.lyric = ''
+    })
+    return
+
+    if (this.active === 3) {
+      const text = '点击下载后会将工作区重置到初始状态以便编辑新歌词，请务必保存到本地（为了避免误操作歌词会复制到剪切板）'
+      const action = await this.$confirm(text, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        closeOnPressEscape: true
+      })
+
+      // 剪切板操作
+      if (!Clipboard['isSupported']()) {
+        this.$message({ type: 'warning', message: '您的浏览器不支持复制操作，请使用现代浏览器' })
+      } else {
+        const clipboard = new Clipboard('.el-message-box .el-button--primary', { text: () => this.lyric })
+        clipboard.on('success', () => {
+          this.$notify({
+            type: 'success',
+            message: '已成功将歌词复制到剪切板',
+            onClose: async () => {
+              Object.keys(this.model).forEach(key => this.model[key] = '')
+              this.lyric = ''
+              this.mp3Url = ''
+              this.active = 0
+              await this.getMusics()
+              await Thread.sleep()
+              this.aplayer.play(0)
+              this.$nextTick(() => {
+                this.$refs.form['$refs'].form['resetFields']()
+                this.lyric = ''
+              })
+            }
+          })
+          clipboard.destroy()
+        })
+        clipboard.on('error', (evt) => {
+          console.log(evt)
+          this.$message({ type: 'error', message: '复制时出现错误，请使用现代浏览器' })
+          clipboard.destroy()
+        })
+      }
+
+      if (action !== 'confirm') return // 取消操作
+      // 保存歌词到文件
+      window['saveAs'](
+        new Blob([this.lyric], { type: 'text/plain' }),
+        `${this.model.singerName} - ${this.model.songName}.lrc`
+      )
+    } else this.$message({ type: 'warning', message: '请先编辑好歌词并预览过之后再下载哦！' })
   }
 
 }
