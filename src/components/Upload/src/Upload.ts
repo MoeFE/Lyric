@@ -10,9 +10,11 @@ export class Upload extends Vue {
     const file = target.files[0]
     const reader = new FileReader()
     target.value = null
-    reader.onload = () => {
-      this.$emit('upload', file, reader, target)
+    reader.onloadend = () => {
+      this.$emit('loadend', file, reader, target)
     }
+    const events = ['abort', 'error', 'loadend', 'loadstart', 'progress']
+    events.forEach(evt => reader.addEventListener(evt, () => this.$emit(evt)))
     reader.readAsDataURL(file)
   }
 }
