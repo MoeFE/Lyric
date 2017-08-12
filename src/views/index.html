@@ -14,7 +14,7 @@
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
         <APlayer ref="aplayer" :music="music" :showlrc="showlrc" listmaxheight="200px" @loadedmetadata="loadedmetadata" @error="errorHandler" />
-        <Upload @loadstart="uploadLoadstartHandler" @loadend="uploadLoadendHandler" />
+        <Upload @keypress.native.enter="loadNetworkMedia" @focusout.native="loadNetworkMedia" @loadstart="uploadLoadstartHandler" @loadend="uploadLoadendHandler" />
       </el-col>
     </el-row>
   </main>

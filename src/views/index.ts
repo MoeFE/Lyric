@@ -195,6 +195,8 @@ export default class IndexPage extends Vue {
     if (item) {
       this.model.songName = item.name
       this.model.singerName = item.artists.map(x => x.name).join(' / ')
+      this.model.albumName = item.album.name || ''
+      this.lyric = LRCUtil.getMeta(this.model) + LRCUtil.getPureLyric(this.lyric)
       const { data } = item.id ? await NeteaseCloudMusicApi.getMusicURL(item.id) : { data: { success: true } }
       if (data.success) {
         const music = {
@@ -281,6 +283,20 @@ export default class IndexPage extends Vue {
       name: result[2] || file.name.substr(0, file.name.lastIndexOf('.')) || '未知歌曲',
       artists: [{ name: result[1] || '未知歌手' }],
       mp3Url: URL.createObjectURL(file), // 使用 objectURL, Base64太大导致 localStorage 存储不下
+      album: {}
+    })
+  }
+
+  private loadNetworkMedia (): void {
+    const target = event.target as HTMLInputElement
+    const url = target.value
+    // 如果URL为空或未改变则不加载
+    if (url.trim().length <= 0 || url === this.mp3Url) return
+    // 模拟触发 select 事件载入数据
+    this.selectHandler({
+      name: '网络歌曲',
+      artists: [{ name: '网络歌手' }],
+      mp3Url: url,
       album: {}
     })
   }
