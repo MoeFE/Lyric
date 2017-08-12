@@ -42,7 +42,11 @@ export class Editor extends Vue {
     const regex: RegExp = /\[ti:.*\]|\[ar:.*\]|\[al:.*\]|\[by:.*\]/g
     const resetValue = (value: string) => value.replace(regex, '').trim() + '\n'
     const value: string = resetValue(this.value)
-    this.$emit('input', value ? this.meta + value : '')
+    this.$emit('input', value.trim() ? this.meta + value : '')
+    const target = event && event.target as HTMLTextAreaElement
+    if (target && target.tagName && target.tagName.toLowerCase() === 'textarea') {
+      this.$nextTick(() => target.selectionStart = target.selectionEnd = target.value.length - 1)
+    }
   }
 
   @Watch('currentTime')
