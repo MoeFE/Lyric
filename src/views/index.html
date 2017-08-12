@@ -14,7 +14,7 @@
       </el-col>
       <el-col :lg="{ span: 7, push: 2 }">
         <APlayer ref="aplayer" :music="music" :showlrc="showlrc" listmaxheight="200px" @loadedmetadata="loadedmetadata" @error="errorHandler" />
-        <Upload />
+        <Upload @loadstart="uploadLoadstartHandler" @loadend="uploadLoadendHandler" />
       </el-col>
     </el-row>
   </main>

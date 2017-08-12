@@ -39,7 +39,9 @@ export default class IndexPage extends Vue {
   private getLyricAsync: (id: number) => void
 
   private $message: any
-  private aplayer = null
+  private $loading: any
+  private loading: any = null
+  private aplayer: any = null
   private showlrc: boolean = true
   private active: number = 0
   private mp3Url: string = null
@@ -157,8 +159,9 @@ export default class IndexPage extends Vue {
   @Watch('lyric')
   private lyricChange (): void {
     this.model = LRCUtil.lyric2model(this.lyric)
-    if (this.mp3Url === this.aplayer.currentMusic.url) this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
-    else this.active = 0
+    if (this.mp3Url === this.aplayer.currentMusic.url) {
+      this.active = LRCUtil.isValid(this.lyric) ? 2 : 1
+    } else this.active = 0
   }
 
   @Watch('active')
@@ -192,14 +195,14 @@ export default class IndexPage extends Vue {
     if (item) {
       this.model.songName = item.name
       this.model.singerName = item.artists.map(x => x.name).join(' / ')
-      const { data } = await NeteaseCloudMusicApi.getMusicURL(item.id)
+      const { data } = item.id ? await NeteaseCloudMusicApi.getMusicURL(item.id) : { data: { success: true } }
       if (data.success) {
         const music = {
           id: item.id,
           title: this.model.songName,
           author: this.model.singerName,
           pic: item.album.picUrl,
-          url: data['data'][0].url
+          url: item.id ? data['data'][0].url : item.mp3Url
         }
         this.mp3Url = music.url
         if (this.music.findIndex(x => x.id === item.id) < 0) this.music.push(music)
@@ -216,7 +219,7 @@ export default class IndexPage extends Vue {
     if (this.aplayer.currentMusic.lrc && this.aplayer.currentMusic.lrc !== 'loading') return
     await Thread.sleep(500)
     const { data } = await NeteaseCloudMusicApi.getLyric(this.aplayer.currentMusic.id)
-    const lrc = data.nolyric || data.uncollected ? null : data.lrc.lyric
+    const lrc = data.nolyric || data.uncollected ? '' : data.lrc.lyric
     if (data.success && this.showlrc) {
       this.aplayer.setMusic({ ...this.aplayer.currentMusic, lrc })
     } else {
@@ -250,6 +253,36 @@ export default class IndexPage extends Vue {
         showClose: isDesktop
       })
     }
+  }
+
+  private uploadLoadstartHandler (): void {
+    this.loading = this.$loading({ fullscreen: true })
+  }
+
+  private uploadLoadendHandler (file: File): void {
+    if (!file) return
+    this.loading.close()
+
+    // 判断文件类型
+    if (!file.type.startsWith('audio/')) {
+      this.$message({ type: 'error', message: '文件格式不支持，请上传音频文件' })
+      return
+    }
+    // 判断 size
+    if (file.size <= 0) {
+      this.$message({ type: 'error', message: '读取文件大小失败' })
+      return
+    }
+
+    // 文件名（歌手 - 歌名.扩展名）
+    const result = /(.+)\s*-\s*(.+)(\..+)/.exec(file.name)
+    // 模拟触发 select 事件载入数据
+    this.selectHandler({
+      name: result[2] || file.name.substr(0, file.name.lastIndexOf('.')) || '未知歌曲',
+      artists: [{ name: result[1] || '未知歌手' }],
+      mp3Url: URL.createObjectURL(file), // 使用 objectURL, Base64太大导致 localStorage 存储不下
+      album: {}
+    })
   }
 
 }
