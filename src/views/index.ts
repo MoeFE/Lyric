@@ -217,19 +217,6 @@ export default class IndexPage extends Vue {
   }
 
   private async downloadHandler (): Promise<void> {
-    Object.keys(this.model).forEach(key => this.model[key] = '')
-    this.lyric = ''
-    this.mp3Url = ''
-    this.active = 0
-    await this.getMusics()
-    await Thread.sleep()
-    this.aplayer.play(0)
-    this.$nextTick(() => {
-      this.$refs.form['$refs'].form['resetFields']()
-      this.lyric = ''
-    })
-    return
-
     if (this.active === 3) {
       const text = '点击下载后会将工作区重置到初始状态以便编辑新歌词，请务必保存到本地（为了避免误操作歌词会复制到剪切板）'
       const action = await this.$confirm(text, '提示', {
