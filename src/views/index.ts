@@ -122,8 +122,9 @@ export default class IndexPage extends Vue {
           url: item.id ? data['data'][0].url : item.mp3Url
         }
         this.mp3Url = music.url
-        if (this.music.findIndex(x => x.id === item.id) < 0) this.music.push(music)
-        this.aplayer.play(this.music.length - 1)
+        const index = this.music.findIndex(x => x.id === item.id)
+        if (index < 0) this.music.push(music)
+        this.aplayer.play(index < 0 ? this.music.length - 1 : index)
         this.aplayer.play()
       }
     }
