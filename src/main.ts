@@ -7,7 +7,6 @@ import router from './router'
 import store from './store'
 import * as Element from 'element-ui'
 
-import 'element-ui/lib/theme-default/index.css'
 import 'assets/css/kaomoji.css'
 import 'assets/js/evanyou'
 
