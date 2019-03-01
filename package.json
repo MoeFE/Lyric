@@ -10,7 +10,7 @@
     "format": "prettier-eslint \"**/*.{js,jsx,json,ts,tsx,vue,md}\" --write"
   },
   "dependencies": {
-    "element-ui": "^2.4.6",
+    "element-ui": "^2.6.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-emotion": "^0.4.2",
